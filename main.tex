@@ -1,0 +1,672 @@
+\documentclass[12pt, a4paper]{report} 
+
+\usepackage[margin=3cm]{geometry}
+
+\usepackage{setspace}
+\setstretch{1.5}
+
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{array} 
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{fancyvrb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{threeparttable} 
+\usepackage{tikz}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{verbatim}
+\usepackage{xcolor}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+
+
+\usepackage{url}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black, 
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\usepackage{tocloft}
+
+% --- 列表页无页码设置 ---
+\tocloftpagestyle{empty}
+
+\renewcommand{\contentsname}{Table of Contents}
+
+% --- 目录标题居中设置 ---
+\renewcommand{\cfttoctitlefont}{\centering\Large\bfseries}
+\renewcommand{\cftaftertoctitle}{}
+\renewcommand{\cftlottitlefont}{\centering\Large\bfseries}
+\renewcommand{\cftafterlottitle}{}
+\renewcommand{\cftloftitlefont}{\centering\Large\bfseries}
+\renewcommand{\cftafterloftitle}{}
+
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftbeforelottitleskip}{0pt}
+\setlength{\cftbeforeloftitleskip}{0pt}
+\setlength{\cftbeforesecskip}{10pt}
+
+% --- Chapter 格式设置 (保持不变) ---
+\titleformat{\chapter}[block]
+  {\centering\normalfont\Large\bfseries} 
+  {Chapter \thechapter:}                 
+  {0.5em}                                
+  {}                                     
+
+\titlespacing*{\chapter}{0pt}{-20pt}{15pt}
+
+% --- 【核心修改】重定义 Abstract 环境 ---
+% 1. 不再使用 \chapter*，避免产生页码和巨大的字体
+% 2. 手动控制居中和置顶
+\renewenvironment{abstract}
+{
+    \clearpage
+    \thispagestyle{empty} % 强制当前页无页码
+    
+    % 标题部分
+    \begin{center}
+        \large Abstract 
+    \end{center}
+    
+    \vspace{1em} % 标题和正文之间留一点空隙
+    \noindent    % 正文第一段不缩进
+}
+{
+    \clearpage % 结束时换页
+}
+
+\begin{document}
+
+% --- 标题页 ---
+\begin{titlepage}
+    \centering
+    \vspace*{1cm} 
+    \large
+    University of Southampton, 2025 \\
+    Social Sciences, Economics 
+    
+    \vspace{7cm} 
+    
+    \begin{spacing}{1.5}
+        {\LARGE \textbf{From Protection to Exclusion: The Changing Impact of Credit Cycles on OECD Youth Labor Markets} \par}
+    \end{spacing}
+    
+    \vspace{3cm} 
+    
+    {\large \textbf{WenTong Guan}}
+    
+    \vfill 
+    
+    \thispagestyle{empty}
+\end{titlepage}
+
+% --- 声明页 ---
+\newpage
+\thispagestyle{empty} 
+
+\vspace*{1cm} 
+
+\noindent A dissertation submitted in partial fulfilment of the requirements for the degree of MSc Economics (Social Sciences) by instructional programme.
+
+\bigskip
+\bigskip
+
+\noindent I declare that this dissertation is my own work, and that where material is obtained from published or unpublished works, this has been fully acknowledged in the references.
+
+\bigskip
+\bigskip
+\bigskip
+
+\noindent Signature: \underline{\hspace{5cm}} 
+
+\newpage
+% --- 前置部分全局无页码 ---
+\pagestyle{empty} 
+
+% --- 摘要页 (应用上方的新定义) ---
+\begin{abstract}
+    This dissertation investigates the changing relationship between credit cycles and youth labor markets in 27 OECD countries from 2000 to 2017, addressing the persistence of high youth unemployment despite global credit expansion. It specifically examines whether the 2008 Global Financial Crisis (GFC) induced a structural break in how financial shocks and employment protection legislation (EPL) affect young workers. The results identify the GFC as a critical watershed. Prior to the crisis, credit cycles followed standard business cycle patterns, with EPL effectively buffering adverse shocks. In contrast, post-crisis credit expansions evolved into toxic booms significantly correlated with rising youth unemployment, while EPL failed to function as a stabilizer. The findings demonstrate that young workers bear a disproportionate share of post-crisis adjustment costs, with dynamic estimates confirming significant hysteresis and scarring effects.
+
+    \vspace{2em}
+    \noindent \textbf{Keywords:} Youth Unemployment, Credit Cycles, Employment Protection Legislation, Jobless Recovery， Scarring Effect
+    
+    \noindent \textbf{Word count:} 7,351
+\end{abstract}
+
+\newpage
+
+% --- 目录页 ---
+\tableofcontents
+
+\newpage
+
+% --- 表图目录 ---
+\begingroup
+    \let\clearpage\relax 
+    \listoftables
+    \vspace{2cm} 
+    \listoffigures
+\endgroup
+
+\newpage
+
+% --- Page numbering starts here ---
+\newpage
+\pagenumbering{arabic} 
+\pagestyle{plain}   
+\setcounter{page}{1}
+
+\chapter{Introduction} 
+Youth unemployment has long been regarded as one of the most sensitive indicators of macroeconomic fluctuations and one with particularly severe social consequences. Compared to the adult workforce, the youth population generally occupies a disadvantaged position regarding employment stability, contractual security, and skill accumulation, making them more vulnerable to shocks during economic downturns. Following the outbreak of the Global Financial Crisis (GFC) in 2008, youth unemployment rates surged to historic highs worldwide, even exceeding 50\% in some European countries. To alleviate employment pressures, monetary authorities across nations widely adopted expansionary credit policies to stimulate investment and demand. However, despite this prolonged global credit expansion, youth unemployment remains stubbornly high. This phenomenon of jobless recovery motivates the core research questions of this paper. How exactly does the credit cycle shape youth employment? Does this impact change significantly under different institutional environments, or during periods before and after crises?
+
+To answer these questions, this paper constructs a quarterly panel dataset covering 27 OECD countries from 2000 to 2017 and analyzes both the level and distributional effects of credit cycles on youth unemployment. The main findings indicate that the GFC is a significant watershed in the functional mechanism of the credit cycles. Before the crisis, credit booms and busts represented conventional business cycle fluctuations and had only an transitory impact on youth unemployment. At the same time, employment protection institutions were able to buffer the youth to some extent during these adverse shocks. Following the crisis, the economic implications of credit expansion changed markedly. The credit boom did not improve employment market as expected. Instead, it exacerbated youth unemployment. Concurrently, the distributional consequences of credit shocks between youth and adult labor became much more asymmetric, with the youth bearing much higher costs. In addition, post-crisis credit shocks possess significant persistence. Their impact on youth unemployment does not diminish over time but rather shows clear signs of hysteresis and scarring effects. Most importantly, employment protection institutions failed to function as stabilizers as what they did before the crisis. Instead, rigid institutions may inadvertently amplify the ``insider-outsider" divide, thereby exacerbating the scarring effects on the youth rather than mitigating them.
+
+The contribution of this study is twofold. Fristly, it provides a novel explanation for the persistence of high youth unemployment in OECD countries. This paper provides evidence that post-crisis credit expansion crowds out youth employment, which challenges the traditional "credit-growth-employment" nexus. Second, it delineates the boundary conditions of labor market institutions. This study demonstrates that institutional protection is less effective to shield marginal workers when facing systematic crisis. By identifying this regime-contingent role of labor market institutions, the paper contributes to ongoing debates on the reform of employment protection.
+
+The remainder of this paper is organized as follows. Chapter 2 reviews relevant literature to establish the research foundation. Chapter 3 introduces the data sources, construction methods for major variables, and econometric specifications. Chapter 4 reports and analyzes the empirical results. Chapter 5 concludes the paper and outlines policy implications as well as suggestions for future research.
+
+\chapter{Literature Review}
+\section{Credit Cycles and its Transformation}
+Traditional macro-financial theory has long regarded the credit channel as one of the key amplification mechanisms of the business cycle. The core of this view is that the credit availability acts as a pro-cyclical lever, which alleviates financing constraints during upturns while tightening financial cost during downturns. For example, \cite{ChodorowReich2014} demonstrates that differences in the health of bank balance sheets lead to significant differences in firm-level employment contraction, proving that credit supply shocks can translate into substantial job losses in the short term. \cite{Mian2014} further extends the transmission mechanism from firm financing to household demand. They argue that high leverage and balance sheet recessions in the household sector suppress consumption demand, thus leading to the decline in employment. This series of studies forms the basis for the pre-crisis narrative of the benign credit cycle: credit expansion is typically accompanied by improvements in investment, output, and employment, while credit contraction amplifies recessions and unemployment.
+
+However, most of these studies are based on pre-crisis or early-crisis data. As the research perspective lengthens, an increasing body of literature has begun to question the stability of this relationship in the long term and in the post-crisis period. Research based on long-term cross-country data points out that credit booms characterized by rapid expansion of private sector leverage significantly increase the probability of financial crises. Moreover, recessions triggered by such credit booms generally cause more persistent damage to output and employment and slower economic recovery than ordinary recessions \citep{Schularick2012, Jorda2013}. This result suggests that credit expansion may negatively impact growth and employment by accumulating financial vulnerabilities in the medium-to-long term, thereby challenging the traditional view of credit expansion as merely a pro-cyclical stimulus. Based on these insights, \cite{Gorton2020} theoretically proposed the necessity of distinguishing between good booms and bad booms. Credit booms accompanied by productivity growth are sustainable, whereas those in which productivity weakens significantly in the later stages is more likely to culminate in crises and stagnation. \cite{Illing2018} further supplements this view from the perspective of demand and debt.  A high-debt environment post-crisis can lock the economy into a low-demand equilibrium, such that even under loose credit conditions, the economy exhibits a combination of low investment, low growth, and high unemployment.
+
+The literature on credit misallocation and zombie firms provides more specific micro-level mechanisms to explain this phenomenon. \cite{Caballero2008} first proposed the concept of zombie firms and argued that banks' continuous credit support to low-efficiency firms due to capital constraints and regulatory pressure inhibits the resource reallocation. This crowds out the expansion of high-productivity firms and reduces industry-level productivity and job creation. More recent studies extended this logic, arguing that banks are more incentivized to roll over loans to troubled firms in the context of prolonged low interest rates and loose policies, which locks credit resources in low-productivity sectors and thereby suppresses job creation \citep{Acharya2021, Acharya2022}.
+
+More importantly, a growing body of research indicates that the relationship between credit expansion and employment itself has significantly changed in the post-crisis period. After obtaining credit support, firms are more inclined toward capital deepening or balance sheet repair rather than expanding their workforce, leading to the phenomenon of jobless recovery \citep{Giroud2017, Cloyne2020}. At the same time, the long-term inhibitory effect of high household leverage on demand has also been shown to persist after the crisis, making it difficult for credit expansion to effectively translate into new employment through the demand channel \citep{Mian2017}.
+
+
+\section{Labor market transmission and distributional incidence on youth}
+The above literature provides the theoretical and empirical foundation for this paper's discussion of the relationship between the credit cycle and youth unemployment. However, they primarily focus on the impact of the credit cycle on aggregate employment but pay limited attention to how these effects differ across generational groups within the labor market. Existing labor-related literature shows that the labor force is not homogeneous. The theoretical foundation for understanding this phenomenon is the ``insider-outsider" theory proposed by \citep{Lindbeck1989}, which posits that the labor market is not perfectly competitive. Insiders with stable positions can leverage their market power and institutional protection to shift adjustment costs onto outsiders who lack bargaining power. This asymmetry in market power is then reinforced by employment protection systems, which in turn further solidifies the segmentation of the labor market.
+
+\cite{Bentolila1990} argues that although higher dismissal costs can suppress some layoffs during economic recessions, they also significantly reduce firms’ willingness to hire during recovery periods, leading to rigidity in employment adjustment. This rigidity does not affect all groups equally. \cite{Mortensen2005} explains this mechanism from a search‑matching theory perspective, noting that institutional frictions prolong unemployment duration and create higher frictional unemployment barriers for young new entrants to the labor market. Empirical research by \cite{Bertola2007} validates this, pointing out that increased unionization and enhanced employment protection tend to crowd out groups with higher labor supply elasticity, particularly the youth and women. Moreover, \cite{Gorry2013} finds that besides EPL, other rigid institutions such as minimum wages also raise labor costs and worsen the employment prospects of inexperienced young workers.
+
+To evade the high adjustment costs brought by this institutional rigidity, firms adjust their hiring forms accordingly, which gives rise to a dual labor market. \cite{Boeri2005} finds that due to the high legal and procedural costs of dismissing senior employees, firing temporary workers becomes a rational and preferred choice for firms. In an in‑depth comparative study of France and Spain, \cite{Bentolila2012} points out that because dismissal costs for permanent contracts are too high, firms make extensive use of temporary contracts as a buffer against demand fluctuations. This dual segmentation creates a clear fracture in the labor market, where the youth labor force is locked into unstable temporary employment, making youth unemployment highly sensitive to the business cycle. Research by \cite{Bell2011} shows that during the great recession of 2008, the increase in the youth unemployment rate far exceeded that of adults, confirming that the youth are typical marginal labor.
+
+\section{Hysteresis, scarring, and persistence}
+The literature discussed previously explains the overall impact of credit cycles on employment and why the youth experience greater shocks during fluctuations. However, they fail to explain the empirical fact that high youth unemployment rates exhibit extreme persistence following a crisis. Existing literature points toward another, more pessimistic mechanism: hysteresis.
+
+\cite{Blanchard1986} formally proposed this theory in their seminal study using European unemployment data, noting that the current level of unemployment is highly dependent on its historical path. This provides a macro-theoretical foundation for understanding the jobless recovery phenomenon in post-crisis labor markets. \cite{Ball2014} argues that the great recession triggered by the 2008 GFC caused extremely severe long-term damage to potential output, permanently pushing up the natural rate of unemployment in many countries. This implies that high post-crisis unemployment is not merely a cyclical weakness but a reflection of structural damage to the economy. \cite{Yagan2019} uses US data to identify this phenomenon more precisely. He finds that although the overall unemployment rate in regions severely impacted by the GFC recession has superficially returned to pre-crisis levels, the employment-to-population ratio in these regions remains significantly lower than in other regions. This difference suggests that the shock led to a large number of working-age people permanently leaving the labor market.
+
+At the micro level, this macro hysteresis mainly manifests as scarring effects on young workers. The youth entering the labor market during a recession face not only immediate employment difficulties but also lasting negative impacts throughout their entire professional lives. College graduates who finish their studies during a recession are often forced into low-quality initial jobs that do not match their educational qualifications. This underemployment typically requires several years to partially correct through frequent job-hopping, but stil continues to hinder their upward mobility in the long run \citep{Oreopoulos2012,Kahn2010}. \cite{Schwandt2019} extends this conclusion to broader outcomes, finding that unlucky cohorts suffer negative effects not only in income but across various dimensions of social well‑being such as divorce rates and mortality, indicating that initial labor‑market shocks have profound socioeconomic consequences.
+
+
+
+\chapter{Data \& Methodology}
+\section{Data Description and Variable Construction}
+This study utilizes a quarterly panel dataset covering 27 OECD member countries from 2000 to 2017 \footnote{These countries include: Australia, Austria, Belgium, Canada, Czechia, Denmark, Finland, France, Germany, Greece, Hungary, Ireland, Israel, Italy, Japan, Korea, Luxembourg, Mexico, Netherlands, New Zealand, Norway, Poland, Portugal, Spain, Sweden, United Kingdom and United States
+}. Since this paper simultaneously focuses on the impact of the credit cycle on the absolute level of the youth unemployment rate and its distributed effects across different age groups, two dependent variables are used. One is the youth unemployment rate, where youth refers to the population aged 15 to 24. The other dependent variable is the unemployment rate gap, defined as the difference between the youth unemployment rate and the overall unemployment rate. Both sets of unemployment data are from the OECD Employment Database.
+
+The credit cycle variables are the two key explanatory variables. One may challenge the choice of a discrete credit status indicator over a continuous credit growth rate. This is because this study focuses not on the general marginal effect of credit, but on its disproportionate impact on employment under tail-end extreme conditions. Following the threshold method proposed by \cite{Mendoza2008}, this paper constructs two 0–1 dummy variables: Credit Boom and Credit Bust. Specifically, I firstly obtained nominal total credit to the non-financial private sector (in local currency) from the Bank for International Settlements (BIS) and deflated it using the contemporaneous CPI index (base year 2010 = 100) to derive real total credit. I then computed quarterly real credit growth and used it to characterize cyclical fluctuations in credit conditions. Let $y_{i,t}$ denote the real credit growth for country $i$ in quarter $t$. I decomposed this sequence into a long-term trend component $\tau_{i,t}$ and a cyclical component $c_{i,t}$, such that $y_{i,t} = \tau_{i,t} + c_{i,t}$. The trend component is extracted using the Hodrick-Prescott (HP) filter, which solves the following minimization problem:
+$$\min_{\{\tau_{t}\}} \sum_{t=1}^{T} (y_{t} - \tau_{t})^2 + \lambda \sum_{t=2}^{T-1} [(\tau_{t+1} - \tau_{t}) - (\tau_{t} - \tau_{t-1})]^2$$
+where smoothing parameter $\lambda$ is set to the standard value of 1600 for quarterly data. After obtaining the cyclical component $c_{i,t}$, I calculate the country-specific standard deviation $\sigma_i$ and identify extreme credit states based on deviation thresholds: a quarter is defined as a Credit Boom if $c_{i,t} \ge 1.65\sigma_i$, and a Credit Bust if $c_{i,t} \le -1.65\sigma_i$. Although the HP filter has been criticized for its endpoint bias and sensitivity to smoothing parameters \citep{Hamilton2018}, I argue that its application is justified in the context of this study. The focus is not on precisely identifying the structural long-term dynamics of credit, but rather on distinguishing medium-term credit trends from short-term cyclical deviations. Moderate trend estimation errors are unlikely to distort the identification of extreme credit conditions and fall within an acceptable range.
+
+Another key explanatory variable of interest is the OECD indicator of the strictness of employment protection legislation (Strictness of Employment Protection, EPL). This index is a composite institutional measure that gauges the stringency of regulations governing dismissals and the use of temporary contracts. Since the EPL indicator is only available at an annual frequency, I convert it to quarterly frequency by carrying forward the annual values within each year. Note that to mitigate the potential multicollinearity problem introduced by the interaction term between it and the credit cycle variables and to facilitate the interpretation of the economic meaning of the coefficients, I demeaned the EPL variable, that is, in the regression analysis, I used the values ​​of each observation minus the mean of the whole sample rather than the original index.
+
+Finally, this paper includes a set of macroeconomic control variables to control conventional business cycles and demographic factors. The year-over-year (YoY) growth rates of CPI and real GDP are sourced from the IMF International Financial Statistics (IFS) Database, while the youth population share (as a percentage of the working-age population) is obtained from the OECD Database. Together, these variables are merged at the country–quarter level to form the final dataset used in the subsequent empirical analysis.
+
+Table \ref{tab:summary_stats} shows the descriptive statistics for all variables used in the empirical analysis. While the theoretical sample size should be 1,944 observations (27 countries $\times$ 72 quarters), the final effective estimation sample comprises 1,864 observations due to missing data for certain key variables in specific countries or quarters. To ensure that all regression specifications are estimated on a consistent and balanced sample, the final estimation sample therefore consists of 1,864 observations. 
+
+As shown in Panel A, the youth unemployment rate exhibits significant heterogeneity and volatility. During the sample period, the mean youth unemployment rate is as high as 17.30\%, with a standard deviation of 9.37\%, indicating vast discrepancies in youth employment conditions across countries or within the same country over time. Notably, the range of this indicator is extremely wide, with a minimum of 4.43\%, and a maximum of 60.60\%, the latter corresponding primarily to periods of severe labor market distress in Greece during the sovereign debt crisis. Regarding macroeconomic control variables, the average real GDP growth rate is 2.14\%, but its distribution spans from a deep recession of -11.60\% to rapid expansion of 28.10\%. The CPI growth rate averages 2.05\%, suggesting a generally moderate inflationary environment, yet it also encompasses scenarios of deflation (-6.08\%) and high inflation (10.90\%). The youth population share has a mean of 15.40\% and a standard deviation of 2.92\%, ranging from 10.90\% to 27.30\%, which shows that while demographic structures are relatively stable across time, non-negligible cross-national differences persist. In addition, the mean of the centered EPL index is 0.00, with a standard deviation of 0.67 and a range of [-1.67, 1.75], indicating sufficient cross-sectional variation in labor market institutional rigidity among the sample countries.
+
+Panel B presents the distribution of the two credit cycle binary indicators. The results show that credit boom episodes occur 101 times in the sample, accounting for approximately 5.42\% of all observations, while credit bust episodes occur 85 times, or about 4.56\% of the sample. This low-frequency but high-intensity distribution of credit events enables the empirical analysis to focus on the extreme phases of the credit cycle and provides the necessary sample variation to assess the asymmetric effects of credit booms and credit busts on youth employment.
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+\caption{Descriptive Statistics of Variables}
+\label{tab:summary_stats}
+\begin{tabular}{lccccc}
+\toprule
+Variable & Obs & Mean & Std. Dev. & Min & Max \\
+\midrule
+\multicolumn{6}{l}{\textit{Panel A: Continuous Variables}} \\
+\addlinespace[0.5ex]
+Youth Unemployment Rate (\%) & 1,864 & 17.30 & 9.37 & 4.43 & 60.60 \\
+Youth Population Ratio (\%) & 1,864 & 15.40 & 2.92 & 10.90 & 27.30 \\
+Real GDP Growth (\%) & 1,864 & 2.14 & 2.92 & -11.60 & 28.10 \\
+Consumer Price Index (CPI) & 1,864 & 2.05 & 1.69 & -6.08 & 10.90 \\
+Employment Protection (centered) & 1,864 & 0.00 & 0.67 & -1.67 & 1.75 \\
+\midrule
+\multicolumn{6}{l}{\textit{Panel B: Binary Credit Indicators}} \\
+\addlinespace[0.5ex]
+Variable & Obs & Count & Share (\%) & \multicolumn{2}{c}{---} \\
+\cmidrule(lr){2-4}
+Credit Boom & 1,864 & 101 & 5.42 & \multicolumn{2}{c}{---} \\
+Credit Bust & 1,864 & 85 & 4.56 & \multicolumn{2}{c}{---} \\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{table}
+
+\section{Empirical Model Specification}
+\subsection{Baseline Static Model}
+To evaluate the average impact of credit cycles on youth unemployment and the moderating role of EPL, I first estimate a static panel data model with both country fixed effects and time fixed effects. The baseline econometric specification is formulated as follows:
+\begin{align*}
+Y_{i,t} = & \alpha_i + \lambda_t + \beta_1 \text{Boom}_{i,t-1} + \beta_2 \text{Bust}_{i,t-1} + \gamma \text{EPL}_{i,t} \\ + & \theta_1 (\text{EPL}_{i,t} \times \text{Boom}_{i,t-1}) + \theta_2 (\text{EPL}_{i,t} \times \text{Bust}_{i,t-1}) + \delta \mathbf{X}_{i,t} + \varepsilon_{i,t}
+\end{align*}
+where the subscripts $i$ and $t$ denote country and quarter respectively. The dependent variable $Y_{i,t}$ represents either the youth unemployment rate or the unemployment gap between youth and the total population. Both the two core explanatory variables $\text{Boom}_{i,t-1}$ and $\text{Bust}_{i,t-1}$ are used with a one-period lag. On the one hand, this is to mitigate potential statistical endogeneity issues. On the other hand, extensive labor economics literature shows that the transmission of financial conditions to hiring decisions is rarely instantaneous due to adjustment costs and planning timelines. In reality, firms need time to obtain credit, purchase capital, and post job openings before they can actually hire new employees. Therefore, using a contemporaneous credit variable would underestimate the true impact of financial shocks. On the other hand, a large body of labor economics literature shows that the transmission of financial shocks to hiring decisions is rarely instantaneous due to adjustment costs and planning timelines. In reality, firms need time to obtain credit, purchase capital, and post job openings before they can actually hire new employees. Therefore, using a contemporaneous credit variable would underestimate the true impact of financial shocks. 
+
+$\alpha_i$ and $\lambda_t$ represent country fixed effects and time fixed effects respectively. The country fixed effect absorbs institutional heterogeneity that does not change over time but directly related to both credit depth and unemployment, such as cultural attitudes toward youth employment or the historical strength of labor unions. The time fixed effect controls for common global shocks such as oil price fluctuations or global technological changes, ensuring that the estimated coefficients reflect the specific effects of the domestic credit cycle rather than global trends.
+
+$\mathbf{X}_{i,t}$ includes the three time-varying macroeconomic control variables previously discussed. In the OECD sample used in this paper, due to the high economic integration, close trade ties, and the common monetary policies implemented by many countries, the assumption of cross-sectional independence is likely not valid. Shocks in core economies are likely to spread to other sample countries, resulting in spatial correlation in the error term. Standard clustering robust standard errors only consider intra-country serial correlations, ignoring this cross-sectional correlation, which may lead to downward bias and spurious significance. All regressions are therefore estimated using the Driscoll-Kraay standard error. \citep{Driscoll1998}.
+
+\subsection{Dynamic Analysis: Local Projections}
+Given that static regression cannot reveal the propagation path of credit shocks over time, this paper further employs the local projection method proposed by \cite{Jorda2005} to examine the dynamic effects of credit cycles on the youth unemployment. Specifically, for a given forecast horizon $h=0,1, \dots, 8$, I estimate the following equations:
+\begin{align*}
+    Y_{i,t+h} = & \alpha_{i}^h + \lambda_{t}^h + \beta_1^h \text{Boom}_{i,t-1} + \beta_2^h \text{Bust}_{i,t-1} + \gamma^h \text{EPL}_{i,t} \\ & + \theta_1^h (\text{EPL}_{i,t} \times \text{Boom}_{i,t-1}) + \theta_2^h (\text{EPL}_{i,t} \times \text{Bust}_{i,t-1}) + \delta^h \mathbf{X}_{i,t} + \varepsilon_{i,t+h}
+\end{align*}
+The coefficient sequences $\{ \beta_1^h \}_{h=0}^8$,  $\{ \beta_2^h \}_{h=0}^8$, $\{ \theta_1^h \}_{h=0}^8$ and $\{ \theta_2^h \}_{h=0}^8$ depict the impulse response functions (IRFs) of youth unemployment to credit booms and credit busts, as well as their interaction terms with EPL. This dynamically specified result can intuitively identify whether the credit cycle causes permanent employment impacts and whether the effectiveness of institutional protections diminishes over time. Consistent with the baseline model, the dynamic analysis also includes two-way fixed effects and employs Driscoll-Kraay standard errors. 
+
+Compared with traditional vector autoregression (VAR) models, the local projection method is more robust to model misspecification and can more flexibly handle nonlinear interactions. Specifically, VAR models derive impulse responses iteratively. This means that the impulse response at a prediction period $h$ is a function of the estimated parameters at prediction period $h-1$, ultimately resulting in a nonlinear function of the single-step prediction parameters. If the VAR model itself is misspecificated, the error accumulates and propagates to longer prediction periods, distorting the estimation of impulse persistence. Local projection methods however avoid the accumulation of specification errors by estimating the regression separately for each prediction period $h$, making the estimates for longer prediction periods more reliable.
+
+\chapter{Results}
+\section{Baseline Estimates and Overall Trends}
+Table \ref{tab:baseline_results} presents the estimation results covering the full sample period. First, the estimated coefficients on the control variables are generally consistent with economic intuition, indicating that the model reasonably captures the main determinants of youth labor market. The coefficient for GDP growth is significantly negative; a 1\% increase in GDP leads to a 0.63\% reduction in the youth unemployment rate, which is consistent with the empirical regularity of Okun’s Law. The coefficient for CPI is even more significantly negative, exhibiting an almost 1:1 inverse correlation with the youth unemployment rate. This suggests that inflation support youth employment by alleviating real wage rigidity or by stimulating aggregate demand, which is consistent with the classical short-run Phillips curve. Concurrently, while the coefficient for the youth population share is only marginally significant, its positive coefficient (0.449) validates the cohort crowding hypothesis, indicating a crowding-out effect of relative labor supply on youth employment.
+
+However, the estimates for the core explanatory variables are somewhat counter-intuitive. As expected, the coefficient on the lagged credit bust indicator is significantly positive, with a credit bust event driving the youth unemployment rate up by 1.73\%. It is puzzling that the coefficient on the credit boom indicator is also highly significant and positive, with a credit boom associated with an even larger increase in youth unemployment (2.075\%). In standard business cycle theory, credit expansion typically leads to an increased aggregate demand and job creation (thus a decrease of unemployment). This anomalous positive correlation suggests a ``Toxic Boom" mechanism, wherein credit expansion fails to translate into effective labor demand and may instead crowd out employment through mechanisms such as resource misallocation \citep{Mian2014, Gopinath2017}. The EPL term itself is significantly negative ($-11.49, p < 0.01$), implying that, countries with higher levels of employment protection tend to exhibit lower youth unemployment rates on average. This contradicts the findings of \cite{Bertola2007}, who argue that stronger labor protection institutions lead to greater unemployment effects for groups with high labor supply elasticity, such as the youth. However, this should not be attributed to the EPL itself in the context of this paper. Since the temporal variation in the EPL index is far smaller than the cross-sectional variation, this coefficient primarily reflects economic performance differences between countries.
+
+Turning to the moderating role of employment protection, the interaction terms between EPL and both credit booms and credit busts are statistically insignificant. This suggests that employment protection institutions do not significantly alter the marginal effect of credit shocks on youth unemployment. Superficially, this might suggest that labor market institutions play little role in buffering youth employment against credit cycle fluctuations. However, given that the sample period spans the Global Financial Crisis (GFC), which profoundly altered the logic of credit operations and labor market structures. A simple full-sample pooling may cause institutional effects to offset each other in statistical senses. Accordingly, the next section estimates the model separately for the pre-GFC and post-GFC subsamples.
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+\caption{Impact of Credit Cycles and Employment Protection on Youth Unemployment}
+\label{tab:baseline_results}
+\begin{tabular}{lc}
+\toprule
+Dependent Variable: & Youth Unemployment Rate \\
+\midrule
+ &  \\
+Employment Protection & -11.494$^{***}$ \\
+ & (1.153) \\
+CPI & -1.036$^{***}$ \\
+ & (0.195) \\
+GDP Growth & -0.633$^{***}$ \\
+ & (0.225) \\
+Youth Population Ratio & 0.449$^{*}$ \\
+ & (0.266) \\
+Credit Boom$_{t-1}$ & 2.075$^{***}$ \\
+ & (0.530) \\
+Credit Bust$_{t-1}$ & 1.732$^{***}$ \\
+ & (0.378) \\
+Employment Protection $\times$ Credit Bust$_{t-1}$ & -0.384 \\
+ & (0.438) \\
+Employment Protection $\times$ Credit Boom$_{t-1}$ & 0.454 \\
+ & (0.657) \\
+\midrule
+Country FE & Yes \\
+Time FE & Yes \\
+Within $R^2$ & 0.239 \\
+Observations & 1864 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item \textit{Notes:} Standard errors are reported in parentheses. ***, **, and * denote statistical significance at the 1\%, 5\%, and 10\% levels, respectively.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\section{The GFC as a Structural Break}
+
+Before running the regressions, it is necessary to conduct a descriptive analysis of the relevant economic indicators before and after the GFC in order to justify the use of the crisis as a sample split breakpoint. Table \ref{tab:regime_stats} reports the mean values of major macroeconomic variables across different credit states for two subsamples divided at the second quarter of 2008.
+
+In the pre-GFC period (2000Q1–2008Q2), macroeconomic performance followed classic business cycle regularities. The average GDP growth during credit booms was 3.40\%, significantly higher than the 3.09\% in normal periods and the 2.72\% during credit busts. Correspondingly, the average youth unemployment rate during credit booms was 13.7\%, lower than the 15.0\% in normal periods and 15.4\% during busts. This suggests that credit expansion was typically accompanied by strong economic growth and effective job creation  prior to the crisis.
+
+However, this benign relationship was dismantled in the post-GFC period (2008Q3–2017Q4). The average GDP growth rate during identified credit booms was only 0.386\%, significantly lower than both pre-crisis levels (3.40\%) and even the growth rate of a normal economy during the same period (1.46\%). The average youth unemployment rate during post-GFC credit booms also rose to 20.3\%, which was higher than the 18.6\% in normal periods. This combination of ``high credit, low growth, and high unemployment" suggests a shift in the nature of credit expansion after the crisis. It often occurs against a backdrop of weak aggregate demand. This may reflect survival-oriented borrowing by businesses to maintain operations, or credit rationing by the banking system to zombie companies rather than productive investments aimed at expanding reproduction. In other words, credit expansion in the post-crisis period manifests more as a counter-cyclical adjustment to maintain economic stability than a pro-cyclical amplifier as before. This results in credit expansion failing to absorb young labor and instead being associated with higher unemployment rates.
+
+This divergence in macroeconomic fundamentals provides compelling evidence of a structural break around the 2008 financial crisis. The elasticity of youth employment to credit shocks differs not only in magnitude but also in direction between the two periods. Treating them as homogeneous processes masks these differences. Accordingly, the subsequent analysis is conducted separately for the two subsamples to identify more accurately the effects of credit shocks and employment protection institutions.
+\begin{table}[H]
+  \centering
+  \caption{Descriptive Statistics by Credit Regime and Period}
+  \label{tab:regime_stats}
+  \begin{tabular}{llcccc}
+    \toprule
+    Period & Credit State & N & Mean GDP & Mean Youth Unemp & Mean CPI  \\
+    \midrule
+    \textbf{Pre-GFC} & Normal & 843 & 3.090 & 15.000 & 2.630 \\
+    (2000Q1--2008Q2) & Boom   & 37  & 3.400 & 13.700 & 2.160 \\
+                     & Bust   & 38  & 2.720 & 15.400 & 3.430 \\
+    \addlinespace
+    \textbf{Post-GFC} & Normal & 912 & 1.460 & 18.600 & 1.600 \\
+    (2008Q3--2017Q4)  & Boom   & 65  & 0.386 & 20.300 & 1.480 \\
+                      & Bust   & 49  & -0.100 & 22.300 & 1.810 \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \small
+    \item \textit{Notes:} Mean GDP, Mean Youth Unemp, and Mean CPI are expressed in percentage points.
+  \end{tablenotes}
+\end{table}
+
+\subsection{Pre-GFC Period: Institutions as Stabilizers}
+Column (1) of Table \ref{tab:subsample_results} reports the regression results for the pre-GFC subsample. The estimated coefficients on the macroeconomic control variables are broadly consistent with those obtained in the full-sample specification. Both GDP growth and CPI inflation enter with significantly negative coefficients (−0.484 and −0.343, respectively), confirming that macroeconomic dynamics in this period strictly followed the conventional business cycle regularities. Furthermore, the coefficient for the youth population share ($0.825$) shifts to highly significant at the 1\% level. This suggests that prior to the GFC’s reshaping of the labor market, demographic pressure on the supply side was a critical determinant of youth employment.
+
+The direct effects of the credit cycle align the theoretical expectation. The coefficient on the credit bust indicator is significantly positive, implying that financial contractions exert a significant negative shock on youth employment. However, this effect is relatively modest; the coefficient of $0.641$ is less than half of that observed in the full sample. This moderate size again suggests that financial contractions during this period operated largely through conventional cyclical channels. By contrast, the coefficient on the credit boom indicator is positive (0.525) but statistically insignificant. This may be because its net impact on the labor market is absorbed by synchronized growth in the real economy and therefore did not independently worsen youth employment outcomes, which also reinforces the view that credit conditions were broadly synchronized with real economic fundamentals before crisis.
+
+The central finding of this subsection lies in the moderating role of EPL during downturns. The interaction term between EPL and Credit Bust is statistically significant and negative ($-1.213, p < 0.05$). This demonstrates that the marginal impact of credit contractions on the youth unemployment rate systematically weakened as the level of employment protection increased in the pre-GFC period. This result aligns with the traditional view of employment protection serving an insurance function during regular cycles: higher firing costs reduce firms’ layoff elasticity in response to temporary negative shocks, thereby mitigating the transmission of financial contractions to the youth labor market and functioning as a counter-cyclical stabilizer \citep{Bentolila1990, Messina2007}. The underlying economic intuition is that firms view recessions as temporary mean-reverting shocks. Compared to the high layoff costs stipulated by EPLs, firms find it more reasonable to retain employees, bear severance pay, and rehire after demand recovers.
+
+\subsection{Post-GFC: Toxic Booms and Institutional Failure}
+Relative to the pre-GFC period, the estimated coefficients for the post-GFC subsample exhibit significant changes. First, regarding the macroeconomic control variables, GDP growth maintains a significantly negative impact, indicating that overall economic conditions still provide a fundamental support for youth employment. However, its coefficient shifts from −0.484 before the crisis to −0.355 afterward. This weakened elasticity of employment with respect to output growth indicates that even when economic activity recovers, the transmission to youth labor markets is less complete. The coefficient for CPI is no longer significant though its sign is still negative, implying the ineffectiveness of traditional Phillips Curve after the GFC, which aligns with the findings of \cite{Ball2011}. Most notably, the coefficient on the youth population share becomes insignificant in the post-GFC period and its magnitude shrinks substantially to only 0.048. This indicates that youth unemployment in the post-crisis era is less driven by supply-side pressures but more likely dominated by demand-side factors such as insufficient aggregate demand and resource misallocation.
+
+Regading the core explanatory variables, the coefficient for credit boom became highly significantly positive, with a notably larger economic magnitude of $1.61$. This change confirms a severe decoupling between credit expansion and youth employment in the post-crisis era. Credit growth during this period failed to translate into effective labor demand and was instead accompanied by higher youth unemployment. This may reflect the misallocation of credit resources to inefficient zombie firms to ensure their survival. Zombie firms tends to retain their existing workforce who are typically older insiders, but freeze new hiring. Since the youth typically rely more on new vacancies to enter the labor market, a credit-fueled survival of zombie firms in fact blocks the primary channel of youth employment. Another explanation is that firms tends to utilize cheap credit for capital deepening to substitute labor, leading to a typical jobless recovery. In an environment of ultra-low interest rates, firms with access to credit prioritized investment in labor-saving technologies such as automation and digitization over expanding their workforce. This substitution effect is particularly detrimental to the youth since their entry-level tasks are most susceptible to automation, thereby rendering credit expansion statistically positively correlated with youth unemployment. The coefficient on credit bust in the post-GFC period falls to $0.557$ and is no longer statistically significant. However, this should not be viewed as financial contractions losing their destructive power. A more plausible explanation is the ceiling effect in unemployment. Since the average youth unemployment rate in the post-GFC normal state already reaches 18.6\%, far above the 13.7\% observed during pre-crisis booms, youth labor markets in the post-crisis era have already long been in a quasi-recessionary state of secular stagnation. When the baseline unemployment rate is already extremely high, the marginal explanatory power of discrete credit contraction episodes naturally diminishs. In other words, post-GFC youth unemployment has evolved from a cyclical fluctuation into a structural malaise, such that the statistical significance of credit busts as short-run shocks is masked by a persistently deteriorated macroeconomic baseline.
+
+Finally, the results for institutional variables are unexpected. Contrary to the hypothesis of total inefficacy, the results only show a weakening of employment protection mechanisms. The coefficient of interaction term between EPL and credit bust is still negative, despite with a smaller magnitude and a weaker significance level of only 10\%. In an adverse macroeconomic environment of persistently weak demand and increased uncertainty, firms may use various methods to circumvent the nominal protection of the EPL. For example, firms may avoid high dismissal costs by not directly laying off protected internal employees, but instead reduce labor costs by reducing hiring or not renewing expiring temporary contracts. This weakens its countercyclical insurance function without formally dismantling the EPL framework. However, as mentioned earlier, young people are the group most reliant on new job openings and temporary contracts in the labor market. In this case, the nominal protection of EPL for the youth thus weakens.
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+\caption{Sub-sample Analysis: Impact of Credit Cycles on Youth Unemployment}
+\label{tab:subsample_results}
+\begin{tabular}{lcc}
+\toprule
+& (1) & (2) \\
+\multirow{3}{*}{Dependent Variable} & \multicolumn{2}{c}{Youth Unemployment Rate} \\
+\cmidrule(lr){2-3}
+ & Pre-GFC & Post-GFC \\
+ & ($\leq$ 2008 Q2) & ($>$ 2008 Q2) \\
+\midrule
+ &  &  \\
+Employment Protection & -0.340 & -11.313$^{***}$ \\
+ & (2.586) & (2.875) \\
+CPI & -0.343$^{***}$ & -0.239 \\
+ & (0.125) & (0.203) \\
+GDP Growth & -0.484$^{***}$ & -0.355$^{***}$ \\
+ & (0.102) & (0.121) \\
+Youth Population Ratio & 0.825$^{***}$ & 0.048 \\
+ & (0.140) & (0.527) \\
+Credit Boom$_{t-1}$ & 0.525 & 1.610$^{***}$ \\
+ & (0.407) & (0.587) \\
+Credit Bust$_{t-1}$ & 0.641$^{**}$ & 0.557 \\
+ & (0.243) & (0.437) \\
+Employment Protection $\times$ Credit Bust$_{t-1}$ & -1.213$^{**}$ & -1.023$^{*}$ \\
+ & (0.472) & (0.600) \\
+Employment Protection $\times$ Credit Boom$_{t-1}$ & -0.783 & 0.318 \\
+ & (0.873) & (0.750) \\
+\midrule
+Country FE & Yes & Yes \\
+Time FE & Yes & Yes \\
+Within $R^2$ & 0.111 & 0.182 \\
+Observations & 838 & 1026 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item \textit{Notes:} Standard errors are reported in parentheses. ***, **, and * denote statistical significance at the 1\%, 5\%, and 10\% levels, respectively.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\section{Intergenerational Distribution: The Youth-Adult Gap}
+The previous section uncovered the heterogeneous effects of credit cycles on the level of youth unemployment rates before and after the 2008 GFC. However, focusing solely on changes in absolute levels is insufficient to distinguish the aggregate impact of macroeconomic shocks from their distributive consequences across age groups. This section further adopts the gap between the youth unemployment rate and the overall unemployment rate as the dependent variable to examine the mechanisms of credit cycles and employment protection institutions from a perspective of intergenerational distribution. By focusing on the gap rather than the level, the specification isolates the relative vulnerability of the youth, more precisely detecting the structural distortions in labor allocation. 
+
+Column (1) of Table \ref{tab:gap_subsample_results} reports the regression results for the pre-GFC period. During this phase, the main effects of both credit booms and credit busts are statistically insignificant, indicating that macro-financial shocks are largely neutral across age cohorts under normal business-cycle conditions. A credit expansions generated extensive labor demand that absorbed new entrants as effectively as it retained experienced staff. This impact on young and adult workers move broadly in parallel and do not generate much intergenerational heterogeneity. The coefficient on the interaction between EPL and credit busts is significantly negative (−0.644).  implying that financial contractions do not lead to a disproportionate deterioration of youth unemployment relative to adult unemployment in countries with stronger employment protection. Instead, it even dampened the relative disadvantage of youth workers. Therefore, in regular economic cycles, institutional constraints not only moderated aggregate employment volatility but also helped suppress the redistributive effects of shocks across age groups, functioning as a stabilizer in the intergenerational dimension.
+
+The results for the post-GFC period are completely different.  First, the coefficient on credit booms becomes significantly positive. A boom leads to a $0.988\%$ increase in the youth-to-total unemployment gap, implying that the toxic booms of the post-crisis era not only harm overall employment but also significantly widen the intergenerational disparities. This provides further evidence for the resource misallocation mechanism: credit resources may be prioritized to maintain the job stability of insiders, while the youth, acting as outsiders, are further marginalized from the recovery process. Second, unlike in the level regressions where the effect of credit busts was insignificant, the coefficient on credit busts in the gap specification becomes marginal significantly positive (0.396). This discrepancy suggests that although the ceiling effect of high baseline unemployment rates made absolute levels less sensitive to changes, relative inequality continued to worsen. Thus, unlike the symmetric adjustment seen before the crisis, the post-GFC credit cycle exhibits clear intergenerational asymmetry, with the youth bearing a disproportionate share of labor market risk. More importantly, the moderating role of EPL is no longer effective in this stage. The interaction terms for EPL with both credit booms and busts are statistically insignificant. In the face of a systemic structural crisis, traditional employment protection is no longer capable of curbing the expansion of the intergenerational gap. Protection becomes more irrelevant for those already outside the fortress. Strict EPL may protect the existing stock of adult employment but does nothing to facilitate the flow of new youth hires.
+
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+\caption{Impact of Credit Cycles on Youth-Total Unemployment Gap}
+\label{tab:gap_subsample_results}
+\begin{tabular}{lcc}
+\toprule
+\multirow{3}{*}{Dependent Variable} & \multicolumn{2}{c}{Unemployment Gap} \\
+\cmidrule(lr){2-3}
+ & Pre-GFC & Post-GFC \\
+ & ($\leq$ 2008 Q2) & ($>$ 2008 Q2) \\
+\midrule
+ &  &  \\
+Employment Protection & 0.262 & -6.277$^{***}$ \\
+ & (1.482) & (1.502) \\
+CPI & -0.182$^{**}$ & -0.048 \\
+ & (0.073) & (0.107) \\
+GDP Growth & -0.247$^{***}$ & -0.205$^{***}$ \\
+ & (0.059) & (0.066) \\
+Youth Population Ratio & 0.461$^{***}$ & -0.000 \\
+ & (0.105) & (0.335) \\
+Credit Boom$_{t-1}$ & 0.278 & 0.988$^{***}$ \\
+ & (0.289) & (0.331) \\
+Credit Bust$_{t-1}$ & 0.238 & 0.396$^{*}$ \\
+ & (0.184) & (0.220) \\
+Employment Protection $\times$ Credit Bust$_{t-1}$ & -0.644$^{**}$ & -0.548 \\
+ & (0.287) & (0.371) \\
+Employment Protection $\times$ Credit Boom$_{t-1}$ & -0.520 & 0.193 \\
+ & (0.395) & (0.388) \\
+\midrule
+Country FE & Yes & Yes \\
+Time FE & Yes & Yes \\
+Within $R^2$ & 0.088 & 0.181 \\
+Observations & 838 & 1026 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item \textit{Notes:} Standard errors are reported in parentheses. ***, **, and * denote statistical significance at the 1\%, 5\%, and 10\% levels, respectively.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+
+\section{Persistence and Hysteresis: The Dynamics of Youth Unemployment}
+The preceding results establish the heterogeneous effects of credit cycles on youth unemployment and its intergenerational differential before and after the GFC. However, it remains unclear whether these asymmetric effects are merely short-run cyclical phenomena or whether they accumulate persistently over time and thereby exert long-term impacts on youth labor market. This section therefore further traces the dynamic responses of youth unemployment to credit booms and credit busts, as well as the moderating role of institutions before and after the crisis. f credit shocks dissipate quickly, they are merely temporary deviation from the natural unemployment rate could have more limited long-run welfare implications. 
+
+Figure \ref{fig:irf_pre_gfc} presents the dynamic response paths for the pre-GFC period. The impact of credit busts on youth unemployment peaks in the initial period and then exhibits a clear decaying trend. By the fifth quarter, the impulse coefficient drops to near zero. This indicates that the disruptive effect of credit contractions on youth unemployment was a mean-reverting process rather than persistent before the crisis, though the adjustment speed is not rapid. The financial shocks could be absorbed by the elasticity of the economy without altering its long-term equilibrium. Concurrently, the coefficients on the interaction between EPL and credit busts are significantly negative in the contemporaneous period and the subsequent six quarters, with confidence intervals lying clearly below zero.This not only corroborates the static regression finding of EPL acting as a buffer but also reveals the timeliness and persistence of its protective role: stricter dismissal restrictions effectively suppressed the magnitude of rising unemployment, securing a window for market adjustment and preventing short-term shocks from evolving into long-term unemployment. Although the coefficients on credit booms are positive at all horizons, their confidence intervals are very wide and often include zero; and a similar pattern is also observed in the  interaction between EPL and credit booms, indicating that the dynamic responses associated with credit booms are unstable.
+
+Figure \ref{fig:irf_post_gfc} displays an entirely different dynamics for the post-GFC period. The effects of credit booms are highly persistent. Contrary to the expected short-term fluctuations, toxic booms keep youth unemployment elevated at between 1.0 and 1.8 percentage points for as many as eight consecutive quarters following the shock, and the confidence intervals never include zero. This persistent response suggests that post-crisis credit expansions' adverse effects exhibit strong inertia. Similarly, the effects of credit busts do not display a decay pattern observed in the pre-GFC period but remain at around 0.5 percentage points over the entire eight-quarter horizon. This implies that once a crisis occurs, the youth unemployment rate is permanently pushed to and maintained at a ``new normal," further confirming the vulnerability of the youth labor market post-crisis. This persistence is essentially a negative feedback loop. Young workers who failed to find work during the initial shock missed out on crucial on-the-job training opportunities, thus reducing their employability, which in turn reduced their chances of getting a job. On the other hand, this also means that the financial shock has been internalized into companies' long-term expectations and hiring behavior. Prolonged balance sheet repair, weak aggregate demand, and increasing uncertainty may reduce companies' willingness to expand hiring even when credit is available. More importantly, the moderating role of EPL becomes obscured throughout the entire eight-quarter forecast horizon. The confidence intervals for the interaction terms are consistently wide and contain the zero line, confirming the failure of institutional protection from a dynamic perspective. When the shock becomes structural, preventing dismissal is insufficient if the new vacancy creation has permanently stalled.
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{impulse_response_functions_preGFC.png}
+        \caption{Pre-GFC Sample}
+        \label{fig:irf_pre_gfc}
+    \end{subfigure}
+    \hfill % 添加水平间距
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{impulse_response_functions_postGFC.png}
+        \caption{Post-GFC Sample}
+        \label{fig:irf_post_gfc}
+    \end{subfigure}
+    
+    \caption{Impulse Response Functions for Youth Unemployment}
+    \label{fig:irf_combined}
+    
+    \vspace{1ex}
+    \begin{minipage}{\textwidth}
+        \small \textit{Notes:} Shaded areas represent 95\% confidence intervals.
+    \end{minipage}
+\end{figure}
+
+
+
+\chapter{Conclusions}
+This study reveals structural changes in the relationship between youth labor markets and credit cycles in OECD countries before and after the 2008 global financial crisis. Prior to the GFC, credit cycles manifested as benign expansions and normal contractions. Their negative effects on labor markets can be largely buffered by employment protection institutions. However, this benign mechanism was disrupted in the post-crisis era. This study provides evidence that post-GFC credit expansions evolved into toxic booms, wherein credit growth not only decoupled from GDP growth but even drove youth unemployment higher. At the same time, employment protection institutions failed to function as a counter-cyclical stabilizer in this new environment. Hence, the 2008 crisis is not a simply cyclical recession but a structural watershed, which marks the end of the traditional credit-driven growth in OECD countries and the failure of traditional labor market adjustment mechanisms.
+
+This transformation of macroeconomic environment triggered profound intergenerational distributional consequences at the micro level of labor market structure. The pre-crisis credit fluctuations did not significantly widen intergenerational disparities, whereas post-crisis credit booms and credit busts substantially intensified the relative disadvantage of young workers. This disadvantage not only remains unaddressed by traditional employment protection systems but is even intensified. More importantly, these adverse effects are not short-term but long-lived phenomena. Both credit expansions and contractions in the post-crisis period generate persistent increases in youth unemployment, indicating an existence of scarring effect, where the initial employment exclusion leads to a vicious cycle, transforming cyclical unemployment risks into structural and long-term distress. In this sense, credit cycles not only reshape employment structures but also amplify intergenerational inequality over time. This process is likely to operate through channels such as temporary employment, hiring freezes, and skill depreciation, with long-lasting implications for human capital accumulation among young workers.
+
+These findings carry important policy implications. First, the evidence of toxic booms suggests that the traditional view of treating total credit as a macroeconomic barometer is no longer suitable for the new normal in the post-crisis era as credit expansion does not necessarily mean that resources are allocated to productive sectors. Policymakers should therefore pay more attention to the quality and destination of credit flows to ensure that financial resources flow into productive activities with genuine employment potential. For example, they could employ differentiated capital requirements or direct credit guidance. Second, the post-crisis failure of employment protection institutions suggests that rigid protection strategies relying on high firing costs are insufficient to protect the youth and may even shift adjustment pressures onto them by reinforcing labor market segmentation. The policy focus should shift from protecting jobs to protecting workers, taking measures such as strengthened vocational training, lifelong learning, and other active labor market policies aimed at enhancing the employability of young workers.
+
+Despite providing robust empirical evidence, this study is subject to two notable limitations. First, the analysis of the specific channels through which credit shocks affect the youth labor market is primarily based on established economics literature and logical deduction from the observed widening intergenerational gap. Due to the lack of long-term and cross-nationally comparable data, these mechanisms are not empirically tested. Future research could build upon this foundation by using firm-level and individual-level microdata to more precisely identify and estimate the various mechanisms proposed in this paper. For example, regarding the resource misallocation channel, according to the preceding analysis, the negative correlation between credit growth and youth employment should be more significant in industries with more zombie firms if this channel does exist, and if the effect is mainly reflected through job type. If industry-level productivity data or bank registration data at the loan level were available, it would be possible to directly verify whether credit extension directly crowds out entry-level job vacancies, thus providing direct evidence for this channel. Second, the sample consists only OECD countries, whose labor market institutions and financial systems exhibit a certain degree of homogeneity. The applicability of these conclusions to emerging economies with more different institutional environments remains an open question.
+
+\begin{thebibliography}{99}
+\bibitem[Acharya et al.(2021)]{Acharya2021}
+Acharya, V. V., Lenzu, S. and Wang, O. (2021).
+\newblock Zombie lending and policy traps.
+\newblock \textit{NBER Working Paper Series}, No. w29606.
+
+\bibitem[Acharya et al.(2022)]{Acharya2022}
+Acharya, V. V., Crosignani, M., Eisert, T. and Steffen, S. (2022).
+\newblock Zombie lending: Theoretical, international, and historical perspectives.
+\newblock \textit{Annual Review of Financial Economics}, \textbf{14}(1), 21--38.
+
+\bibitem[Ball and Mazumder(2011)]{Ball2011}
+Ball, L. M. and Mazumder, S. (2011).
+\newblock Inflation dynamics and the great recession.
+\newblock \textit{NBER Working Paper Series}, No. w17044.
+
+\bibitem[Ball(2014)]{Ball2014}
+Ball, L. (2014).
+\newblock Long-term damage from the Great Recession in OECD countries.
+\newblock \textit{European Journal of Economics and Economic Policies}, \textbf{11}(2), 149--160.
+
+\bibitem[Bell and Blanchflower(2011)]{Bell2011}
+Bell, D. N. and Blanchflower, D. G. (2011).
+\newblock Young people and the Great Recession.
+\newblock \textit{Oxford Review of Economic Policy}, \textbf{27}(2), 241--267.
+
+\bibitem[Bentolila and Bertola(1990)]{Bentolila1990}
+Bentolila, S. and Bertola, G. (1990).
+\newblock Firing costs and labour demand: how bad is eurosclerosis?
+\newblock \textit{The Review of Economic Studies}, \textbf{57}(3), 381--402.
+
+\bibitem[Bentolila et al.(2012)]{Bentolila2012}
+Bentolila, S., Cahuc, P., Dolado, J. J. and Le Barbanchon, T. (2012).
+\newblock Two-tier labour markets in the great recession: France versus Spain.
+\newblock \textit{The Economic Journal}, \textbf{122}(562), F155--F187.
+
+\bibitem[Bertola et al.(2007)]{Bertola2007}
+Bertola, G., Blau, F. D. and Kahn, L. M. (2007).
+\newblock Labor market institutions and demographic employment patterns.
+\newblock \textit{Journal of Population Economics}, \textbf{20}(4), 833--867.
+
+\bibitem[Blanchard and Summers(1986)]{Blanchard1986}
+Blanchard, O. J. and Summers, L. H. (1986).
+\newblock Hysteresis in unemployment.
+\newblock In: \textit{Economic Models of Trade Unions}, Dordrecht: Springer Netherlands, 235--242.
+
+\bibitem[Boeri and Jimeno(2005)]{Boeri2005}
+Boeri, T. and Jimeno, J. F. (2005).
+\newblock The effects of employment protection: Learning from variable enforcement.
+\newblock \textit{European Economic Review}, \textbf{49}(8), 2057--2077.
+
+\bibitem[Caballero et al.(2008)]{Caballero2008}
+Caballero, R. J., Hoshi, T. and Kashyap, A. K. (2008).
+\newblock Zombie lending and depressed restructuring in Japan.
+\newblock \textit{American Economic Review}, \textbf{98}(5), 1943--1977.
+
+\bibitem[Chodorow-Reich(2014)]{ChodorowReich2014}
+Chodorow-Reich, G. (2014).
+\newblock The employment effects of credit market disruptions: Firm-level evidence from the 2008--9 financial crisis.
+\newblock \textit{The Quarterly Journal of Economics}, \textbf{129}(1), 1--59.
+
+\bibitem[Cloyne et al.(2020)]{Cloyne2020}
+Cloyne, J., Ferreira, C. and Surico, P. (2020).
+\newblock Monetary policy when households have debt: new evidence on the transmission mechanism.
+\newblock \textit{The Review of Economic Studies}, \textbf{87}(1), 102--129.
+
+\bibitem[Driscoll and Kraay(1998)]{Driscoll1998}
+Driscoll, J. C. and Kraay, A. C. (1998).
+\newblock Consistent covariance matrix estimation with spatially dependent panel data.
+\newblock \textit{Review of Economics and Statistics}, \textbf{80}(4), 549--560.
+
+\bibitem[Giroud and Mueller(2017)]{Giroud2017}
+Giroud, X. and Mueller, H. M. (2017).
+\newblock Firm leverage, consumer demand, and employment losses during the great recession.
+\newblock \textit{The Quarterly Journal of Economics}, \textbf{132}(1), 271--316.
+
+\bibitem[Gopinath et al.(2017)]{Gopinath2017}
+Gopinath, G., Kalemli-{\"O}zcan, {\c{S}}., Karabarbounis, L. and Villegas-Sanchez, C. (2017).
+\newblock Capital allocation and productivity in South Europe.
+\newblock \textit{The Quarterly Journal of Economics}, \textbf{132}(4), 1915--1967.
+
+\bibitem[Gorton and Ordonez(2020)]{Gorton2020}
+Gorton, G. and Ordonez, G. (2020).
+\newblock Good booms, bad booms.
+\newblock \textit{Journal of the European Economic Association}, \textbf{18}(2), 618--665.
+
+\bibitem[Gorry(2013)]{Gorry2013}
+Gorry, A. (2013).
+\newblock Minimum wages and youth unemployment.
+\newblock \textit{European Economic Review}, \textbf{64}, 57--75.
+
+\bibitem[Hamilton(2018)]{Hamilton2018}
+Hamilton, J. D. (2018).
+\newblock Why you should never use the Hodrick-Prescott filter.
+\newblock \textit{Review of Economics and Statistics}, \textbf{100}(5), 831--843.
+
+\bibitem[Illing et al.(2018)]{Illing2018}
+Illing, G., Ono, Y. and Schlegl, M. (2018).
+\newblock Credit booms, debt overhang and secular stagnation.
+\newblock \textit{European Economic Review}, \textbf{108}, 78--104.
+
+\bibitem[Jord{\`a}(2005)]{Jorda2005}
+Jord{\`a}, {\`O}. (2005).
+\newblock Estimation and inference of impulse responses by local projections.
+\newblock \textit{American Economic Review}, \textbf{95}(1), 161--182.
+
+\bibitem[Jord{\`a} et al.(2013)]{Jorda2013}
+Jord{\`a}, {\`O}., Schularick, M. and Taylor, A. M. (2013).
+\newblock When credit bites back.
+\newblock \textit{Journal of Money, Credit and Banking}, \textbf{45}(s2), 3--28.
+
+\bibitem[Kahn(2010)]{Kahn2010}
+Kahn, L. B. (2010).
+\newblock The long-term labor market consequences of graduating from college in a bad economy.
+\newblock \textit{Labour Economics}, \textbf{17}(2), 303--316.
+
+\bibitem[Lindbeck and Snower(1989)]{Lindbeck1989}
+Lindbeck, A. and Snower, D. J. (1989).
+\newblock \textit{The insider-outsider theory of employment and unemployment}.
+\newblock MIT Press Books, 1.
+
+\bibitem[Mendoza and Terrones(2008)]{Mendoza2008}
+Mendoza, E. G. and Terrones, M. E. (2008).
+\newblock An anatomy of credit booms: evidence from macro aggregates and micro data.
+\newblock \textit{NBER Working Paper Series}, No. w14049.
+
+\bibitem[Messina and Vallanti(2007)]{Messina2007}
+Messina, J. and Vallanti, G. (2007).
+\newblock Job flow dynamics and firing restrictions: evidence from Europe.
+\newblock \textit{The Economic Journal}, \textbf{117}(521), F279--F301.
+
+\bibitem[Mian and Sufi(2014)]{Mian2014}
+Mian, A. and Sufi, A. (2014).
+\newblock What explains the 2007--2009 drop in employment?
+\newblock \textit{Econometrica}, \textbf{82}(6), 2197--2223.
+
+\bibitem[Mian et al.(2017)]{Mian2017}
+Mian, A., Sufi, A. and Verner, E. (2017).
+\newblock Household debt and business cycles worldwide.
+\newblock \textit{The Quarterly Journal of Economics}, \textbf{132}(4), 1755--1817.
+
+\bibitem[Mortensen(2005)]{Mortensen2005}
+Mortensen, D. T. (2005).
+\newblock Growth, unemployment, and labor market policy.
+\newblock \textit{Journal of the European Economic Association}, \textbf{3}(2-3), 236--258.
+
+\bibitem[Oreopoulos et al.(2012)]{Oreopoulos2012}
+Oreopoulos, P., Von Wachter, T. and Heisz, A. (2012).
+\newblock The short- and long-term career effects of graduating in a recession.
+\newblock \textit{American Economic Journal: Applied Economics}, \textbf{4}(1), 1--29.
+
+\bibitem[Schularick and Taylor(2012)]{Schularick2012}
+Schularick, M. and Taylor, A. M. (2012).
+\newblock Credit booms gone bust: monetary policy, leverage cycles, and financial crises, 1870--2008.
+\newblock \textit{American Economic Review}, \textbf{102}(2), 1029--1061.
+
+\bibitem[Schwandt and Von Wachter(2019)]{Schwandt2019}
+Schwandt, H. and Von Wachter, T. (2019).
+\newblock Unlucky cohorts: Estimating the long-term effects of entering the labor market in a recession in large cross-sectional data sets.
+\newblock \textit{Journal of Labor Economics}, \textbf{37}(S1), S161--S198.
+
+\bibitem[Yagan(2019)]{Yagan2019}
+Yagan, D. (2019).
+\newblock Employment hysteresis from the great recession.
+\newblock \textit{Journal of Political Economy}, \textbf{127}(5), 2505--2558.
+
+\end{thebibliography}
+
+\end{document}
